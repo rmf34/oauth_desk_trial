@@ -1,45 +1,46 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.3'
+ruby '2.1.1'
 
-# Use postgresql as the database for Active Record
-gem 'pg'
-
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
-
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-
-# Use CoffeeScript for .js.coffee assets and views
+# gem 'bootstrap-sass'
+# gem 'cancancan'
 gem 'coffee-rails', '~> 4.0.0'
-
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
+# gem 'devise'
+# gem 'faker'
+# gem 'friendly_id'
+# gem 'haml'
+# gem 'haml-rails'
+# gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-rails.git'
 gem 'jquery-rails'
-
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+# gem 'jquery-ui-rails'
+gem 'pg'
+gem 'rails', '4.0.3'
+gem 'rails_12factor'
+gem 'sass-rails', '~> 4.0.0'
 gem 'turbolinks'
+gem 'uglifier', '>= 1.3.0'
+gem 'unicorn', :require => false
+# gem 'unicorn-worker-killer', :require => false
 
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
-
-group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
+group :development do
+  gem 'awesome_print'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'quiet_assets'
+  gem 'thin'
 end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.1.2'
+group :development, :test do
+  gem 'byebug'
+end
 
-# Use unicorn as the app server
-# gem 'unicorn'
+group :test do
+  # gem 'database_cleaner'
+  # gem 'factory_girl_rails'
+  gem 'rspec-rails'
+  # gem 'timecop'
+  # gem 'webmock'
 
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
+  # acceptance
+  # gem 'capybara'
+end
