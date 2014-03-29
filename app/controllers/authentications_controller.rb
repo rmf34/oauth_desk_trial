@@ -25,4 +25,11 @@ class AuthenticationsController < ApplicationController
       flash[:notice] = 'Something went wrong destroying the Authentication.'
     end
   end
+
+  private
+
+    def load_authentication
+      @authentication = Authentication.find(params[:id])
+    end
+
 end
