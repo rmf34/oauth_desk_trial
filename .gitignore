@@ -18,3 +18,9 @@
 # Ignore other unneeded files.
 .project
 .DS_Store
+
+
+# ignore this file, so contents are not commited to github, will need to set
+# these vars on heroku
+# https://devcenter.heroku.com/articles/config-vars
+/config/local_env.yml
