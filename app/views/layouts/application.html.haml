@@ -1,11 +1,22 @@
 !!!
-%html
+%html{lang: 'en'}
   %head
+    %meta{content: 'width=device-width, initial-scale=1.0', name: 'viewport'}
+    %meta{content: 'Meta Description Here', name: 'Cool new desk integration'}
+    %meta{charset: 'utf-8'}
+    %meta{content: '', name: 'author'}
+
     %title OauthDeskTrial
-    = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
-    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
+    /[if lt IE 9]
+      %script(src='//html5shim.googlecode.com/svn/trunk/html5.js')
   %body
-    %p.notice= notice
-    %p.alert= alert
-    = yield
+    #wrap
+      = render 'layouts/header'
+      .container
+        = yield
+      #push
+    = render 'layouts/footer'
+    = yield :final_javascripts

@@ -1,0 +1,25 @@
+%nav.navbar.navbar-default{role: 'navigation'}
+  .container
+    .navbar-header
+      %button.navbar-toggle{'data-target' => '#bs-example-navbar-collapse-1', 'data-toggle' => 'collapse', type: 'button'}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      .navbar-brand= link_to 'Oauth Desk', root_path
+    #bs-example-navbar-collapse-1.collapse.navbar-collapse
+      %ul.nav.navbar-nav.navbar-right
+        %li
+          = link_to 'About Us', about_path
+        - if current_user.nil?
+          %li
+            = link_to 'Sign In', user_session_path
+        - else
+          %li.dropdown
+            %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+              = current_user.email
+              %b.caret
+            %ul.dropdown-menu
+              %li.divider
+              %li
+                = link_to 'Sign Out', destroy_user_session_path, :method => :delete

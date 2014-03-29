@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.1.1'
 
-# gem 'bootstrap-sass'
+gem 'bootstrap-sass'
 # gem 'cancancan'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'devise'
