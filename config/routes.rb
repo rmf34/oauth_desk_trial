@@ -3,5 +3,5 @@ OauthDeskTrial::Application.routes.draw do
 
   get 'about', to: 'static_pages#about'
 
-  root 'authorizations#index'
+  root 'authentications#index'
 end
