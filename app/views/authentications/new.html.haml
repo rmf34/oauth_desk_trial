@@ -1,0 +1,32 @@
+- if @connected_authentications.present?
+  %h2 Connected Authentications
+  %table.table.table-bordered.table-hover
+    %thead
+      %tr
+        %th Provider
+        %th Created At
+        %th Updated At
+        %th Destroy
+      %tbody
+        - @connected_authentications.each do |authentication|
+          %tr
+            %td= link_to authentication.provider.capitalize, desk_show_authentication_path(authentication)
+            %td= authentication.created_at.to_s(:normal_date_time)
+            %td= authentication.updated_at.to_s(:normal_date_time)
+            %td= link_to 'Delete', authentication_path(authentication), :method => 'DELETE', :data => { :confirm => 'Are you sure?' }
+
+%br
+%h2 Authentications Available
+%table.table.table-bordered.table-hover
+  %thead
+    %tr
+      %th Provider
+      %th Connected?
+    %tbody
+      - @possible_authentications.each do |provider|
+        %tr
+          %td= provider.capitalize
+          - if already_authenticated?(provider)
+            %td Yes
+          - else
+            %td= link_to "Connect #{provider.capitalize}", "/auth/#{provider}"
