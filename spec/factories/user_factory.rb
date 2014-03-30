@@ -7,6 +7,6 @@ FactoryGirl.define do
   factory :user do
     email { generate(:user_email) }
     password 'password'
-    association :authentiction, :factory => :authentication, :strategy => :build
+    # association :authentiction, :factory => :authentication, :strategy => :build
   end
 end

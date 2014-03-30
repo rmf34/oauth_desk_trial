@@ -33,12 +33,13 @@ end
 
 group :development, :test do
   gem 'byebug'
+  gem 'rspec'
+  gem 'rspec-rails'
 end
 
 group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'rspec-rails'
   # gem 'timecop'
   # gem 'webmock'
 
