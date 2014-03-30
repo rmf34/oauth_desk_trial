@@ -1,0 +1,60 @@
+- content_for(:final_javascripts) do
+  :javascript
+    $(desk.authentications.desk_show.init());
+
+.pull-right
+  = image_tag "#{@authentication.provider}_logo.png"
+%h3 Desk.com Dashboard
+%br
+
+%h3 Cases available in the first case filter:
+%table.table.table-bordered.table-hover.data_table
+  %thead
+    %tr
+      %th Subject
+      %th Blurb
+      %th Priority
+      %th Labels
+      %th Received At
+      %th Updated At
+      %th Add Label
+    %tbody
+      - @cases_filter_1.each do |case_obj|
+        %tr
+          %td= case_obj.subject
+          %td= case_obj.blurb
+          %td= case_obj.priority
+          %td= case_obj.labels
+          %td= DateTime.parse(case_obj.received_at).to_s(:normal_date_time)
+          %td= DateTime.parse(case_obj.updated_at).to_s(:normal_date_time)
+          %td
+            = form_tag desk_update_path(@authentication, case_obj.id), :method => 'PATCH' do
+              = select_tag options_for_select @label_list
+              = submit_tag 'Add Label', :data => { :disable_with => 'Saving...' }, :class => 'btn btn-primary'
+
+
+%h3 Available Labels
+%table.table.table-bordered.table-hover.data_table
+  %thead
+    %tr
+      %th Name
+      %th Description
+      %th Enabled?
+      %th Types
+      %th Color
+    %tbody
+      - @labels.each do |label|
+        %tr
+          %td= label.name
+          %td
+            - if label.name != label.description
+              = label.description
+          %td= label.enabled
+          %td= label.types
+          %td= label.color
+
+
+%h3 Create New Label
+
+
+%p Assign to first case
