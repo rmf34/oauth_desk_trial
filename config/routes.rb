@@ -5,5 +5,5 @@ OauthDeskTrial::Application.routes.draw do
   resources :authentications
 
   get 'about', to: 'static_pages#about'
-  root 'authentications#index'
+  root 'authentications#new'
 end

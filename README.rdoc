@@ -1,3 +1,5 @@
 ## README
 
 A fun weekend project experimenting with Oauth and the Desk.com API
+
+You create an account on my site with devise, then auth Desk, and sign in with your desk.com credentials. From there you can use the API!
