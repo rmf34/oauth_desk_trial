@@ -25,6 +25,9 @@
 //= require bootstrap/tooltip
 //= require bootstrap/popover
 //= require turbolinks
+//= require dataTables/jquery.dataTables
+//= require dataTables/jquery.dataTables.bootstrap3
+//= require_self
 //= require_tree .
 
 
