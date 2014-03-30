@@ -1,6 +1,6 @@
 class AuthenticationsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :load_authentication, :only => [:destroy, :desk_update]
+  before_filter :load_authentication, :only => [:destroy, :desk_update, :desk_create]
 
   def new
     providers = OmniAuth::Builder.providers
@@ -47,6 +47,18 @@ class AuthenticationsController < ApplicationController
 
   end
 
+  def desk_create
+    response_code = Desk::ApiWrapper.post(@authentication, params[:resource_type], params[:name], params[:color])
+
+    if response_code == '201'
+      flash[:notice] = "#{params[:resource_type]} successfully created."
+      redirect_to desk_show_authentication_path(@authentication)
+    else
+      flash[:error] = "Something went wrong creating a #{params[:resource_type]} called #{params[:name]}"
+      redirect_to desk_show_authentication_path(@authentication)
+    end
+  end
+
   def create
     auth = request.env['omniauth.auth']
     new_auth = current_user.authentications.build(
@@ -79,5 +91,7 @@ class AuthenticationsController < ApplicationController
     def load_authentication
       @authentication = Authentication.find(params[:id])
     end
+
+    # skipped strong params in an effort to save time
 
 end

@@ -1,5 +1,7 @@
 class Desk::ApiWrapper
 
+  LABEL_COLORS = %w(Default Blue White Yellow Red Orange Green Black Purple Brown Grey Pink).freeze
+
   def self.get(authentication, resource, count, search_param, options = {})
     access_token = self.build_access_token(authentication)
 
