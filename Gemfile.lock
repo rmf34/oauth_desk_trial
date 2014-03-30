@@ -60,6 +60,7 @@ GEM
     coffee-script-source (1.7.0)
     columnize (0.3.6)
     daemons (1.1.9)
+    database_cleaner (1.2.0)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
     devise (3.2.3)
@@ -193,6 +194,7 @@ DEPENDENCIES
   bootstrap-sass
   byebug
   coffee-rails (~> 4.0.0)
+  database_cleaner
   devise
   haml
   haml-rails
