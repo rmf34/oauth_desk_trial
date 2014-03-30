@@ -1,6 +1,6 @@
 class Desk::ApiWrapper
 
-  LABEL_COLORS = %w(Default Blue White Yellow Red Orange Green Black Purple Brown Grey Pink).freeze
+  LABEL_COLORS = %w(default blue white yellow red orange green black purple brown grey pink).freeze
 
   def self.get(authentication, resource, count, search_param, options = {})
     access_token = self.build_access_token(authentication)
@@ -24,19 +24,41 @@ class Desk::ApiWrapper
         response = collection
       end
 
-      return self.return_count(response, count)
+      self.return_count(response, count)
     else
       raise StandardError, 'Problem building access token'
     end
   end
 
-  def self.patch(authentication, resource, resource_id)
+  def self.patch(authentication, resource, resource_id, label, tag_replace)
     access_token = self.build_access_token(authentication)
 
     if access_token.present?
-      response = access_token.put("#{authentication.site}/api/v2/#{resource}/#{resource_id}").body
+      label_action = tag_replace == 'true' ? 'replace' : 'append'
 
-      return response
+      case_hash = {
+        :subject => 'Updated',
+        :status => 'pending',
+        :labels => label,
+        :label_action => label_action
+      }.to_json
+
+      access_token.put("#{authentication.site}/api/v2/#{resource}/#{resource_id}", case_hash).code
+    else
+      raise StandardError, 'Problem building access token'
+    end
+  end
+
+  def self.post(authentication, resource, name, color)
+    access_token = self.build_access_token(authentication)
+
+    if access_token.present?
+      label_hash = { :name => name,
+                     :description => 'A Test Label',
+                     :types => ['case'],
+                     :color => color.downcase
+                    }.to_json
+      access_token.post("#{authentication.site}/api/v2/#{resource}", label_hash).code
     else
       raise StandardError, 'Problem building access token'
     end

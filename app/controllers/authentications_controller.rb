@@ -27,31 +27,30 @@ class AuthenticationsController < ApplicationController
 
       @cases_filter_1 = Desk::ApiWrapper.get(@authentication, :cases, 50, ['filter_id', first_filter_id], {:embedded => true, :ostruct => true, :convert_json => true})
 
-
-
-      #  get cases, show labels, add dropdown to add a label
-
-
-
-
       # this part was a little confusing, as I needed the filter, ID
       # I understand that to be the full url, from here: http://dev.desk.com/API/using-the-api/#identifiers
       # but we still need to split out the numeric id to make a '?filter_id=' request
       # /api/v2/filters/1928837
-
     end
   end
 
   def desk_update
-    Desk::ApiWrapper.patch(@authentication, :cases, params[:id])
+    response_code = Desk::ApiWrapper.patch(@authentication, params[:resource_type], params[:id], params[:label], params[:replace])
 
+    if response_code == '201'
+      flash[:notice] = "#{params[:label]} Label successfully created."
+      redirect_to desk_show_authentication_path(@authentication)
+    else
+      flash[:error] = "Something went wrong adding the #{params[:label]} label."
+      redirect_to desk_show_authentication_path(@authentication)
+    end
   end
 
   def desk_create
     response_code = Desk::ApiWrapper.post(@authentication, params[:resource_type], params[:name], params[:color])
 
-    if response_code == '201'
-      flash[:notice] = "#{params[:resource_type]} successfully created."
+    if response_code == '200'
+      flash[:notice] = "#{params[:name]} Label successfully created."
       redirect_to desk_show_authentication_path(@authentication)
     else
       flash[:error] = "Something went wrong creating a #{params[:resource_type]} called #{params[:name]}"

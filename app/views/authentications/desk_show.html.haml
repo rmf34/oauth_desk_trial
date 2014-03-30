@@ -11,7 +11,7 @@
 = form_tag desk_create_path(@authentication, :resource_type => 'labels'), :method => 'POST' do
   = text_field_tag :name
   = label_tag :color
-  = select_tag :color, options_for_select(Desk::ApiWrapper::LABEL_COLORS)
+  = select_tag :color, options_for_select(Desk::ApiWrapper::LABEL_COLORS.map(&:capitalize))
   = submit_tag 'Create Label', :data => { :disable_with => 'Saving...' }, :class => 'btn btn-primary'
 
 %h3 Cases available in the first case filter:
@@ -36,7 +36,11 @@
           %td= DateTime.parse(case_obj.updated_at).to_s(:normal_date_time)
           %td
             = form_tag desk_update_path(@authentication, case_obj.id, :resource_type => 'cases'), :method => 'PATCH' do
-              = select_tag options_for_select(@label_list)
+              = select_tag :label, options_for_select(@label_list)
+              = label_tag :replace, :replace
+              = radio_button_tag :replace, true
+              = label_tag :replace, :append
+              = radio_button_tag :replace, false, :checked => true
               = submit_tag 'Add Label', :data => { :disable_with => 'Saving...' }, :class => 'btn btn-primary'
 
 
@@ -58,4 +62,4 @@
               = label.description
           %td= label.enabled
           %td= label.types
-          %td= label.color
+          %td{:style => "background-color: #{label.color}"}= label.color
