@@ -41,7 +41,7 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   # gem 'timecop'
-  # gem 'webmock'
+  gem 'webmock'
 
   # acceptance
   # gem 'capybara'
