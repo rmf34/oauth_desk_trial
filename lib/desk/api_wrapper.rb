@@ -4,7 +4,6 @@ class Desk::ApiWrapper
 
   def self.get(authentication, resource, count, search_param, options = {})
     access_token = self.build_access_token(authentication)
-    raise Desk::AccessTokenError
 
     if access_token.present?
       response = access_token.get("#{authentication.site}/api/v2/#{resource}?#{search_param[0]}=#{search_param[1]}").body
