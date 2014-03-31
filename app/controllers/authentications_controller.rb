@@ -28,9 +28,10 @@ class AuthenticationsController < ApplicationController
       @cases_filter_1 = Desk::ApiWrapper.get(@authentication, :cases, 50, ['filter_id', first_filter_id], {:embedded => true, :ostruct => true, :convert_json => true})
 
       # this part was a little confusing, as I needed the filter, ID
-      # I understand that to be the full url, from here: http://dev.desk.com/API/using-the-api/#identifiers
+      # I understand that we are meant to use the full url, from here: http://dev.desk.com/API/using-the-api/#identifiers
       # but we still need to split out the numeric id to make a '?filter_id=' request
       # /api/v2/filters/1928837
+      # as I'm not storing it, this seemed like an OK hack for now
     end
   end
 
@@ -60,12 +61,14 @@ class AuthenticationsController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
+
     new_auth = current_user.authentications.build(
       :provider => auth['provider'],
       :uid =>    auth['uid'],
       :token =>  auth['credentials']['token'],
       :secret => auth['credentials']['secret'],
       :site =>   auth['info']['site'])
+
 
     if new_auth.save
       flash[:notice] = "#{auth['provider'].capitalize} successfully authorized."
@@ -88,9 +91,8 @@ class AuthenticationsController < ApplicationController
   private
 
     def load_authentication
-      @authentication = Authentication.find(params[:id])
+      @authentication = params[:authentication_id].present? ? Authentication.find(params[:authentication_id]) : Authentication.find(params[:id])
     end
 
     # skipped strong params in an effort to save time
-
 end
