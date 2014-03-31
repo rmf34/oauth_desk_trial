@@ -2,4 +2,11 @@
 
 A fun weekend project experimenting with Oauth and the Desk.com API
 
-You create an account on my site with devise, then auth Desk, and sign in with your desk.com credentials. From there you can use the API!
+You create an account on my site with devise, then auth Desk, and sign in with your desk.com credentials. From there you can use the desk API to look at cases. One can also add new labels to their desk integration, and add new labels to cases.
+
+my desk url: https://rmf34.desk.com/agent
+on heroku:   http://oauth-desk-trial.herokuapp.com/
+
+### To Sign In
+email: rmf34@cornell.edu
+password: password
