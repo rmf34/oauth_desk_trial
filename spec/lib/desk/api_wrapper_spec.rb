@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Desk::ApiWrapper do
+  let(:user) { create(:user) }
+  let(:authentication) { create(:authentication, :user => user) }
 
   before(:each) do
     consumer = OAuth::Consumer.new(ENV["#{authentication.provider.upcase}_KEY"], ENV["#{authentication.provider.upcase}_SECRET"], :site => authentication.site, :scheme => :header)
@@ -10,9 +12,6 @@ describe Desk::ApiWrapper do
 
   describe '.get' do
     context 'access token built successfully' do
-      let(:user) { create(:user) }
-      let(:authentication) { create(:authentication, :user => user) }
-
       before(:each) do
         mock_request
       end
@@ -55,6 +54,20 @@ describe Desk::ApiWrapper do
 
   describe '.patch' do
     context 'access token built successfully' do
+
+      it 'updates successfully' do
+        mock_request
+        request = Desk::ApiWrapper.patch(authentication, :cases, 1, 'New Red label', 'false')
+
+        expect(request).to eq '200'
+      end
+
+      def mock_request
+        stub_request(:put, "https://rmf34.desk.com/api/v2/cases/1").
+         with(:body => "{\"subject\":\"Updated\",\"status\":\"pending\",\"labels\":\"New Red label\",\"label_action\":\"append\"}",
+              :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Length'=>'89', 'User-Agent'=>'OAuth gem v0.4.7'}).
+         to_return(:status => 200, :body => '', :headers => {})
+      end
     end
 
     context 'access token error' do
@@ -73,6 +86,20 @@ describe Desk::ApiWrapper do
 
   describe '.post' do
     context 'access token built successfully' do
+      it 'creates a label successfully' do
+        mock_request
+        request = Desk::ApiWrapper.post(authentication, :labels, 'New Red label', 'Red')
+
+        expect(request).to eq '201'
+      end
+
+      def mock_request
+       stub_request(:post, "https://rmf34.desk.com/api/v2/labels").
+         with(:body => "{\"name\":\"New Red label\",\"description\":\"A Test Label\",\"types\":[\"case\"],\"color\":\"red\"}",
+              :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Length'=>'84', 'User-Agent'=>'OAuth gem v0.4.7'}).
+         to_return(:status => 201, :body => '', :headers => {})
+      end
+
     end
 
     context 'access token error' do
