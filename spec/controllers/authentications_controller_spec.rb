@@ -40,6 +40,15 @@ describe AuthenticationsController do
         get :desk_show, :id => authentication_1.id, :format => :html
         expect(response).to be_success
       end
+
+      it 'should handle token exceptions' do
+        Desk::ApiWrapper.stub(:patch).and_return(Desk::AccessTokenError)
+        sign_in(user)
+        get :desk_show, :id => authentication_1.id, :format => :html
+
+        expect(response).to be_redirect
+        expect(flash[:error]).to be_present
+      end
     end
 
     context 'not signed in' do
@@ -76,6 +85,15 @@ describe AuthenticationsController do
           expect(response).to be_redirect
           expect(flash[:error]).to be_present
         end
+
+        it 'should handle token exceptions' do
+          Desk::ApiWrapper.stub(:patch).and_return(Desk::AccessTokenError)
+          sign_in(user)
+          patch :desk_update, :authentication_id => authentication_1.id, :id => resource, :format => :html
+
+          expect(response).to be_redirect
+          expect(flash[:error]).to be_present
+        end
       end
     end
 
@@ -109,6 +127,15 @@ describe AuthenticationsController do
 
           sign_in(user)
           post :desk_create, :id => authentication_1.id, :format => :html
+          expect(response).to be_redirect
+          expect(flash[:error]).to be_present
+        end
+
+        it 'should handle token exceptions' do
+          Desk::ApiWrapper.stub(:patch).and_return(Desk::AccessTokenError)
+          sign_in(user)
+          post :desk_create, :id => authentication_1.id, :format => :html
+
           expect(response).to be_redirect
           expect(flash[:error]).to be_present
         end

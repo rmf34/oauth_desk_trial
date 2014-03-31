@@ -4,6 +4,7 @@ class Desk::ApiWrapper
 
   def self.get(authentication, resource, count, search_param, options = {})
     access_token = self.build_access_token(authentication)
+    raise Desk::AccessTokenError
 
     if access_token.present?
       response = access_token.get("#{authentication.site}/api/v2/#{resource}?#{search_param[0]}=#{search_param[1]}").body
@@ -26,7 +27,7 @@ class Desk::ApiWrapper
 
       self.return_count(response, count)
     else
-      raise StandardError, 'Problem building access token'
+      raise Desk::AccessTokenError
     end
   end
 
@@ -45,7 +46,7 @@ class Desk::ApiWrapper
 
       access_token.put("#{authentication.site}/api/v2/#{resource}/#{resource_id}", case_hash).code
     else
-      raise StandardError, 'Problem building access token'
+      raise Desk::AccessTokenError
     end
   end
 
@@ -53,14 +54,16 @@ class Desk::ApiWrapper
     access_token = self.build_access_token(authentication)
 
     if access_token.present?
-      label_hash = { :name => name,
-                     :description => 'A Test Label',
-                     :types => ['case'],
-                     :color => color.downcase
-                    }.to_json
+      label_hash = {
+        :name => name,
+        :description => 'A Test Label',
+        :types => ['case'],
+        :color => color.downcase
+      }.to_json
+
       access_token.post("#{authentication.site}/api/v2/#{resource}", label_hash).code
     else
-      raise StandardError, 'Problem building access token'
+      raise Desk::AccessTokenError
     end
   end
 
